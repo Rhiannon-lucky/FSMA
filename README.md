@@ -14,7 +14,7 @@ scipt 1.1.0
 
 advertorch 0.2.3
 
-
+kornia 0.6.8
 
 ## Generate adversarial examples
 
