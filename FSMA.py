@@ -93,9 +93,6 @@ def get_parser():
     parser.add_argument('--mean', type=float, default=np.array([0.5, 0.5, 0.5]), help='mean.')
     parser.add_argument('--std', type=float, default=np.array([0.5, 0.5, 0.5]), help='std.')
     parser.add_argument("--max_epsilon", type=float, default=16.0, help="Maximum size of adversarial perturbation.")
-    parser.add_argument("--num_iter_set", type=int, default=10, help="Number of iterations.") # 
-    parser.add_argument("--image_width", type=int, default=299, help="Width of each input images.")
-    parser.add_argument("--image_height", type=int, default=299, help="Height of each input images.")
     parser.add_argument("--momentum", type=float, default=1, help="Momentum")
     parser.add_argument("--beta", type=float, default=1.0, help="beta")
 
@@ -315,14 +312,11 @@ def get_models(list_nets, model_dir):
 
 ##################################################################
 
-def main(i, j, tt, fep):
+def main(i, tt):
     opt = get_parser()
     opt.model_name = list_nets[i]
-    opt.N = j
     opt.att_name = tt[0]
     opt.filter = tt[1]
-    opt.feps = fep
-    # opt.radius = fep
     # DEFENCE_METHOD = {'RP', 'FS', 'FD', 'jpeg', 'tvm', 'quantize', 'quilting', 'NRP'}
     DEFENCE_METHOD = ['RP', 'FS', 'FD', 'jpeg', 'quantize', 'NRP', 'NRP-ori']
     model = get_model(opt.model_name, opt.model_dir) #  [-1,1]
@@ -401,39 +395,7 @@ if __name__ == '__main__':
     # att_name = [['FSMA-trans', 'None'], ['FSMA-trans-median', 'median'], ['FSMA-trans-guass3', 'guass'], ['FSMA-trans-avgGF', 'GF'], ['FSMA-trans-avgGF-enhanceX', 'GF']]
     
     # att_name = [['FSMA-trans-guass1', 'guass']]
-    
-    nns = [5]
-    # for tt in att_name:
-    #     for j in nns:
-    #         for i in range(0, 6):
-    #             main(i, j, tt)
-    # att_name = [['FSMA-DI-avgGF', 'GF'], ['FSMA-DI-avgGF-enhanceX', 'GF']]
-    # att_name = [['FSMA-median', 'median']]#, ['FSMA-guass', 'guass']]
-    # att_name = [['FSMA-guass-3', 'guass']]
 
-    # att_name = [['FSMA-trans-feps-avgGF-enhanceX', 'GF']]
-    # feps = [0.0000001, 0.000001, 0.00001, 0.001, 0.01, 0.1]
-    # feps = [0.01]
-    # feps = [0.1]
-
-    # # att_name = [['FSMATI-trans', 'None'], ['FSMATI-trans-avgGF-enhanceX', 'GF']]
-    # att_name = [['FSMA-trans-feps-0.1-avgGF-enhanceX', 'GF']]
-    # for tt in att_name:
-    #     for j in nns:
-    #         for fep in feps:
-    #             tt = ['FSMA-trans-feps-avgGF-enhanceX'+'-feps-'+str(fep), 'GF']
-    #             for i in range(6, 8):
-    #                 main(i, j, tt, fep)
-    
-    # att_name = [['FSMA-trans-r-avgGF-enhanceX', 'GF']]
-    # feps = [0.0001]
-    # radius = [3, 4, 5, 6]
-    # for tt in att_name:
-    #     for j in nns:
-    #         for r in radius:
-    #             tt = [tt[0]+'-r-'+str(r), 'GF']
-    #             for i in range(6, 8):
-    #                 main(i, j, tt, r)
 
 
     att_name = [['FSMA-trans-new-224-avgGF-enhanceX', 'GF'],
@@ -449,10 +411,6 @@ if __name__ == '__main__':
     
     # att_name = [['FSMA-trans-22', 'none']]
     
-    feps = [0.0001]
-    radius = [2]
     for tt in att_name:
-        for j in nns:
-            for r in radius:
-                for i in range(0, 4):
-                    main(i, j, tt, r)
+        for i in range(0, 4):
+            main(i, tt)

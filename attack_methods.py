@@ -119,22 +119,15 @@ def enhance_SF(x, im, n, N, ll, device, gamma):
     dct_x = dct_2d(x)
     dct_im = dct_2d(im)
 
-    # max_img = dct_x
     # 1
-    # max_img[:, :,0:ll,0:ll] = dct_x[:,:,0:ll,0:ll]
     max_img[:, :,0:ll,0:ll] = (1-n/N) * dct_x[:,:,0:ll,0:ll] + ((n)/N*(1/2**n))*dct_im[:,:,0:ll,0:ll]
     # # 2
-    # max_img[:, :,ll:,0:ll] = dct_x[:,:,ll:,0:ll]
     max_img[:, :,ll:,0:ll] = (1-n/N)*dct_x[:,:,ll:,0:ll] + ((n)*(1/2**n))*dct_im[:,:,ll:,0:ll]
     # # 3
-    # max_img[:, :,0:ll,ll:] = dct_x[:,:,0:ll,ll:]
     max_img[:, :,0:ll,ll:] = (1-n/N)*dct_x[:,:,0:ll,ll:] + ((n)*(1/2**n))*dct_im[:,:,0:ll,ll:]    
     # # 4
-    # max_img[:, :,ll:,ll:] =  dct_x[:, :,ll:,ll:]
     max_img[:, :,ll:,ll:] =  (1-n/N) * dct_x[:, :,ll:,ll:] + ((n)/N)*dct_im[:,:,ll:,ll:]
     
-    # dpt = torch.nn.Dropout2d(p=gamma)
-    # max_img = dpt(max_img)
     max_img_sp = idct_2d(max_img)
     max_img_sp = torch.clip(max_img_sp, 0, 1)
     dpt = torch.nn.Dropout2d(p=gamma)
